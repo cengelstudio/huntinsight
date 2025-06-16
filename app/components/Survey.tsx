@@ -2,54 +2,63 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Question } from '../types';
+import { Question, QuestionOption, Survey } from '../types/index';
 
 export default function Survey() {
   const router = useRouter();
+  const [survey, setSurvey] = useState<Survey | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Fetch the first question
-    fetchQuestion('first');
+    // Fetch the survey
+    const surveyId = localStorage.getItem('surveyId');
+    if (surveyId) {
+      fetchSurvey(surveyId);
+    }
   }, []);
 
-  const fetchQuestion = async (questionId: string) => {
+  const fetchSurvey = async (surveyId: string) => {
     try {
-      const response = await fetch(`/api/questions/${questionId}`);
+      const response = await fetch(`/api/surveys/${surveyId}`);
       if (response.ok) {
-        const question = await response.json();
-        setCurrentQuestion(question);
-        // Update progress (this is an example, adjust based on your needs)
-        setProgress((prev) => Math.min(prev + 20, 100));
-      } else {
-        // If no more questions, submit the survey
-        submitSurvey();
+        const surveyData = await response.json();
+        setSurvey(surveyData);
+        setCurrentQuestion(surveyData.questions[0]);
       }
     } catch (error) {
-      console.error('Error fetching question:', error);
+      console.error('Error fetching survey:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAnswer = async (optionId: string) => {
-    if (!currentQuestion) return;
+  const handleAnswer = async (option: QuestionOption) => {
+    if (!currentQuestion || !survey) return;
 
     // Save the answer
     setAnswers(prev => ({
       ...prev,
-      [currentQuestion.id]: optionId,
+      [currentQuestion.id]: option.id,
     }));
 
     // Get the next question ID based on the selected option
-    const nextQuestionId = currentQuestion.nextQuestionMap[optionId];
+    const nextQuestionId = currentQuestion.nextQuestionMap[option.id];
 
     if (nextQuestionId) {
-      // Fetch the next question
-      await fetchQuestion(nextQuestionId);
+      // Find the next question
+      const nextQuestion = survey.questions.find(q => q.id === nextQuestionId);
+      if (nextQuestion) {
+        setCurrentQuestion(nextQuestion);
+        // Update progress
+        const answeredCount = Object.keys(answers).length + 1;
+        setProgress((answeredCount / survey.questions.length) * 100);
+      } else {
+        // No more questions, submit the survey
+        submitSurvey();
+      }
     } else {
       // No more questions, submit the survey
       submitSurvey();
@@ -57,6 +66,8 @@ export default function Survey() {
   };
 
   const submitSurvey = async () => {
+    if (!survey) return;
+
     try {
       const response = await fetch('/api/responses', {
         method: 'POST',
@@ -65,6 +76,8 @@ export default function Survey() {
         },
         body: JSON.stringify({
           id: crypto.randomUUID(),
+          surveyId: survey.id,
+          userId: localStorage.getItem('userId'),
           answers: Object.entries(answers).map(([questionId, optionId]) => ({
             questionId,
             optionId,
@@ -95,33 +108,43 @@ export default function Survey() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Progress Bar */}
+      <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <div className="h-2 bg-gray-200 rounded-full">
-            <div
-              className="h-2 bg-primary-600 rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${progress}%` }}
-            ></div>
+          <div className="relative pt-1">
+            <div className="flex mb-2 items-center justify-between">
+              <div>
+                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-primary-600 bg-primary-200">
+                  İlerleme
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-semibold inline-block text-primary-600">
+                  {Math.round(progress)}%
+                </span>
+              </div>
+            </div>
+            <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-primary-200">
+              <div
+                style={{ width: `${progress}%` }}
+                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary-500 transition-all duration-500"
+              ></div>
+            </div>
           </div>
-          <p className="mt-2 text-sm text-gray-600 text-right">{progress}% tamamlandı</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-soft p-8">
-          <div className="max-w-xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">{currentQuestion.text}</h2>
-
+        <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+          <div className="p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">
+              {currentQuestion.text}
+            </h2>
             <div className="space-y-4">
               {currentQuestion.options.map((option) => (
                 <button
                   key={option.id}
-                  onClick={() => handleAnswer(option.id)}
+                  onClick={() => handleAnswer(option)}
                   className="w-full text-left px-6 py-4 border-2 border-gray-200 rounded-xl hover:border-primary-500 hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200"
                 >
-                  <div className="flex items-center">
-                    <div className="w-5 h-5 border-2 border-gray-300 rounded-full mr-4 flex-shrink-0 group-hover:border-primary-500"></div>
-                    <span className="text-lg text-gray-900">{option.text}</span>
-                  </div>
+                  {option.text}
                 </button>
               ))}
             </div>

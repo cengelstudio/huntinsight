@@ -1,70 +1,73 @@
-# HuntInsight (AvGörüş)
+# AvGörüş (HuntInsight)
 
-A modern survey platform designed for hunters in Northern Cyprus (TRNC) to collect and analyze hunting-related data.
+AvGörüş, K.K.T.C.'deki avcıların görüşlerini toplamak için geliştirilmiş bir anket sistemidir. Kullanıcılar kimlik bilgileriyle giriş yaparak önceden hazırlanmış soruları yanıtlayabilir ve yönetici panel üzerinden anketler yönetilebilir.
 
-## Features
+## Özellikler
 
-- **Dynamic Survey System**
-  - Branching logic based on answers
-  - Progress tracking
-  - Multiple question types
-  - Real-time validation
+- Kullanıcı Kaydı:
+  - İsim Soyisim
+  - K.K.T.C. Kimlik Numarası
+  - Av Ruhsat Seri Numarası
 
-- **User Management**
-  - Secure registration
-  - TRNC ID verification
-  - Hunting license validation
-  - User data protection
+- Dinamik Anket Sistemi:
+  - Önceki cevaplara göre değişen sorular
+  - Çoktan seçmeli sorular
+  - Esnek şık sayısı
 
-- **Admin Panel**
-  - Password-protected access
-  - Survey management
-  - Response analysis
-  - Data export capabilities
+- Yönetici Paneli:
+  - Tek şifre ile giriş
+  - Anket oluşturma ve düzenleme
+  - Kullanıcı cevaplarını görüntüleme
+  - Anket sonuçlarını inceleme
 
-- **Modern UI/UX**
-  - Responsive design
-  - Light theme with gradients
-  - Soft shadows and rounded corners
-  - Intuitive navigation
+## Teknolojiler
 
-## Tech Stack
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- JSON tabanlı veri depolama
 
-- **Frontend**
-  - Next.js 14
-  - TypeScript
-  - Tailwind CSS
-  - React Hooks
+## Kurulum
 
-- **Backend**
-  - Next.js API Routes
-  - JSON-based data storage
-  - Type-safe API endpoints
+1. Projeyi klonlayın:
+   ```bash
+   git clone https://github.com/yourusername/huntinsight.git
+   cd huntinsight
+   ```
 
-## Project Structure
-
-```
-huntinsight/
-├── app/
-│   ├── api/           # API routes
-│   ├── components/    # Reusable components
-│   ├── types/         # TypeScript definitions
-│   └── ...           # Page components
-├── data/             # JSON data storage
-├── public/           # Static assets
-└── styles/           # Global styles
-```
-
-## Getting Started
-
-1. Install dependencies:
+2. Bağımlılıkları yükleyin:
    ```bash
    npm install
+   # veya
+   yarn install
    ```
 
-2. Start the development server:
+3. Geliştirme sunucusunu başlatın:
    ```bash
    npm run dev
+   # veya
+   yarn dev
    ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Tarayıcınızda http://localhost:3000 adresini açın
+
+## Veri Yapısı
+
+Veriler JSON formatında `data` klasöründe saklanır:
+
+- `users.json`: Kullanıcı kayıtları
+- `surveys.json`: Anket tanımları ve soruları
+- `responses.json`: Kullanıcı cevapları
+- `admin.json`: Yönetici şifresi (varsayılan: "admin")
+
+## Katkıda Bulunma
+
+1. Bu depoyu fork edin
+2. Yeni bir branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some amazing feature'`)
+4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
+5. Bir Pull Request oluşturun
+
+## Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakın.

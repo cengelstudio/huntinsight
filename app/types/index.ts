@@ -2,21 +2,22 @@ export interface User {
   id: string;
   name: string;
   surname: string;
-  trncId: string;
-  huntingLicenseNumber: string;
+  trnc_id: string;
+  hunting_license: string;
   createdAt: string;
+}
+
+export interface Option {
+  id: string;
+  text: string;
+  nextQuestionId?: string;
 }
 
 export interface Question {
   id: string;
   text: string;
-  options: QuestionOption[];
+  options: Option[];
   nextQuestionMap: Record<string, string | null>;
-}
-
-export interface QuestionOption {
-  id: string;
-  text: string;
 }
 
 export interface Survey {
@@ -28,13 +29,17 @@ export interface Survey {
   updatedAt: string;
 }
 
-export interface UserResponse {
+export interface Answer {
+  questionId: string;
+  optionId: string;
+}
+
+export interface Response {
   id: string;
   userId: string;
+  userName: string;
+  userSurname: string;
   surveyId: string;
-  answers: {
-    questionId: string;
-    optionId: string;
-  }[];
+  answers: Answer[];
   completedAt: string;
 }

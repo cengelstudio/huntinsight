@@ -3,11 +3,11 @@ import { updateSurvey } from '@/app/utils/storage';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { surveyId: string } }
 ) {
   try {
     const survey = await request.json();
-    if (survey.id !== params.id) {
+    if (survey.id !== params.surveyId) {
       return NextResponse.json(
         { error: 'Survey ID mismatch' },
         { status: 400 }

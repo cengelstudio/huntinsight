@@ -1,66 +1,51 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { User } from "../types";
+import Image from "next/image";
 
-interface FormData {
-  name: string;
-  surname: string;
-  trnc_id: string;
-  hunting_license: string;
-}
-
-export default function RegisterPage({ params }: { params: { surveyId: string } }) {
+export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    surname: '',
-    trnc_id: '',
-    hunting_license: '',
+  const [formData, setFormData] = useState<Partial<User>>({
+    name: "",
+    surname: "",
+    trnc_id: "",
+    hunting_license: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
+    if (!formData.name || !formData.surname || !formData.trnc_id || !formData.hunting_license) {
+      setError("Lütfen tüm alanları doldurunuz.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch('/api/users', {
-        method: 'POST',
+      const response = await fetch("/api/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...formData,
-          surveyId: params.surveyId
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Kayıt işlemi başarısız oldu.');
+        throw new Error("Kayıt işlemi başarısız oldu.");
       }
 
       const data = await response.json();
-      if (data.id) {
-        router.push(`/survey/${params.surveyId}?userId=${data.id}`);
-      } else {
-        throw new Error('Kullanıcı ID alınamadı.');
-      }
+      router.push(`/survey/${data.surveyId}`);
     } catch (error) {
       console.error('Registration error:', error);
-      setError(error instanceof Error ? error.message : 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+      setError("Bir hata oluştu. Lütfen tekrar deneyiniz.");
     } finally {
       setLoading(false);
     }
@@ -92,10 +77,8 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                 <input
                   type="text"
                   id="name"
-                  name="name"
-                  required
                   value={formData.name}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
                   placeholder="Adınızı giriniz"
                 />
@@ -116,10 +99,8 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                 <input
                   type="text"
                   id="surname"
-                  name="surname"
-                  required
                   value={formData.surname}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
                   className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
                   placeholder="Soyadınızı giriniz"
                 />
@@ -140,10 +121,8 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                 <input
                   type="text"
                   id="trnc_id"
-                  name="trnc_id"
-                  required
                   value={formData.trnc_id}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({ ...formData, trnc_id: e.target.value })}
                   className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
                   placeholder="Kimlik numaranızı giriniz"
                 />
@@ -164,10 +143,8 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                 <input
                   type="text"
                   id="hunting_license"
-                  name="hunting_license"
-                  required
                   value={formData.hunting_license}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({ ...formData, hunting_license: e.target.value })}
                   className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
                   placeholder="Ruhsat numaranızı giriniz"
                 />
