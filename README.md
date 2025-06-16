@@ -31,7 +31,7 @@ AvGörüş, K.K.T.C.'deki avcıların görüşlerini toplamak için geliştirilm
 
 1. Projeyi klonlayın:
    ```bash
-   git clone https://github.com/yourusername/huntinsight.git
+   git clone https://github.com/cengelstudio/huntinsight.git
    cd huntinsight
    ```
 
