@@ -37,8 +37,8 @@ export interface Answer {
 export interface Response {
   id: string;
   userId: string;
-  userName: string;
-  userSurname: string;
+  name: string;
+  surname: string;
   surveyId: string;
   answers: Answer[];
   completedAt: string;

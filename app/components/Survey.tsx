@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Question, QuestionOption, Survey } from '../types/index';
+import type { Question, Option, Survey } from '../types/index';
 
 export default function Survey() {
   const router = useRouter();
@@ -11,6 +11,19 @@ export default function Survey() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+
+  // Kullanıcı bilgileri yoksa localStorage'a örnek değerler ata
+  useEffect(() => {
+    // Clear existing values
+    localStorage.removeItem('userId');
+    localStorage.removeItem('name');
+    localStorage.removeItem('surname');
+
+    // Set new values
+    localStorage.setItem('userId', crypto.randomUUID());
+    localStorage.setItem('name', 'Misafir');
+    localStorage.setItem('surname', 'Kullanıcı');
+  }, []);
 
   useEffect(() => {
     // Fetch the survey
@@ -35,7 +48,7 @@ export default function Survey() {
     }
   };
 
-  const handleAnswer = async (option: QuestionOption) => {
+  const handleAnswer = async (option: Option) => {
     if (!currentQuestion || !survey) return;
 
     // Save the answer
@@ -68,29 +81,49 @@ export default function Survey() {
   const submitSurvey = async () => {
     if (!survey) return;
 
+    const name = localStorage.getItem('name');
+    const surname = localStorage.getItem('surname');
+    const userId = localStorage.getItem('userId');
+
+    if (!name || !surname || !userId) {
+      alert('Lütfen önce kullanıcı bilgilerinizi giriniz.');
+      return;
+    }
+
+    const requestData = {
+      id: crypto.randomUUID(),
+      surveyId: survey.id,
+      userId: userId,
+      name: name,
+      surname: surname,
+      answers: Object.entries(answers).map(([questionId, optionId]) => ({
+        questionId,
+        optionId,
+      })),
+      completedAt: new Date().toISOString(),
+    };
+
+    console.log('Submitting survey with data:', requestData);
+
     try {
       const response = await fetch('/api/responses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          id: crypto.randomUUID(),
-          surveyId: survey.id,
-          userId: localStorage.getItem('userId'),
-          answers: Object.entries(answers).map(([questionId, optionId]) => ({
-            questionId,
-            optionId,
-          })),
-          completedAt: new Date().toISOString(),
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (response.ok) {
         router.push('/thank-you');
+      } else {
+        const error = await response.json();
+        console.error('Server error response:', error);
+        alert(error.error || 'Cevaplar kaydedilirken bir hata oluştu.');
       }
     } catch (error) {
       console.error('Error submitting survey:', error);
+      alert('Cevaplar kaydedilirken bir hata oluştu.');
     }
   };
 

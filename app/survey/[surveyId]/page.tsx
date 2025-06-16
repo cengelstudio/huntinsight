@@ -26,7 +26,26 @@ export default function SurveyPage() {
       router.push("/register");
       return;
     }
-    localStorage.setItem("userId", userId);
+
+    // Fetch user data from API
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/users/${userId}`);
+        if (response.ok) {
+          const userData = await response.json();
+          localStorage.setItem("userId", userData.id);
+          localStorage.setItem("name", userData.name);
+          localStorage.setItem("surname", userData.surname);
+        } else {
+          throw new Error("Failed to fetch user data");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        router.push("/register");
+      }
+    };
+
+    fetchUserData();
 
     const fetchSurvey = async () => {
       try {
@@ -191,8 +210,12 @@ export default function SurveyPage() {
   const submitSurvey = async (finalAnswers: Answer[]) => {
     try {
       const userId = localStorage.getItem("userId");
-      const userName = localStorage.getItem("userName");
-      const userSurname = localStorage.getItem("userSurname");
+      const name = localStorage.getItem("name");
+      const surname = localStorage.getItem("surname");
+
+      if (!userId || !name || !surname) {
+        throw new Error("Kullanıcı bilgileri eksik. Lütfen tekrar giriş yapın.");
+      }
 
       const response = await fetch("/api/responses", {
         method: "POST",
@@ -202,20 +225,21 @@ export default function SurveyPage() {
         body: JSON.stringify({
           surveyId: survey!.id,
           userId,
-          userName,
-          userSurname,
+          name,
+          surname,
           answers: finalAnswers,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Cevaplar kaydedilirken bir hata oluştu.");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Cevaplar kaydedilirken bir hata oluştu.");
       }
 
       router.push("/thank-you");
     } catch (error) {
       console.error("Response submission error:", error);
-      setError("Cevaplarınız kaydedilirken bir hata oluştu.");
+      setError(error instanceof Error ? error.message : "Cevaplarınız kaydedilirken bir hata oluştu.");
     }
   };
 

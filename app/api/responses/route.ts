@@ -21,12 +21,21 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { surveyId, userId, answers, userName, userSurname } = body;
+    console.log('Received request body:', body);
+    const { surveyId, userId, answers, name, surname } = body;
 
     // Validate required fields
-    if (!surveyId || !userId || !answers || !Array.isArray(answers) || !userName || !userSurname) {
+    if (!surveyId || !userId || !answers || !Array.isArray(answers) || !name || !surname) {
+      console.log('Validation failed:', {
+        surveyId: !!surveyId,
+        userId: !!userId,
+        answers: !!answers,
+        isArray: Array.isArray(answers),
+        name: !!name,
+        surname: !!surname
+      });
       return NextResponse.json(
-        { error: 'Geçersiz veri formatı.' },
+        { error: 'Geçersiz veri formatı. Lütfen tüm alanları doldurun.' },
         { status: 400 }
       );
     }
@@ -59,8 +68,8 @@ export async function POST(request: Request) {
       id: crypto.randomUUID(),
       surveyId,
       userId,
-      userName,
-      userSurname,
+      name,
+      surname,
       answers,
       completedAt: new Date().toISOString()
     };

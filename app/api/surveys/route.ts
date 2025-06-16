@@ -1,40 +1,11 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getSurveys, writeSurveys } from '@/app/utils/storage';
 import { Survey } from '@/app/types';
-
-const dataDirectory = path.join(process.cwd(), 'data');
-const surveysFile = path.join(dataDirectory, 'surveys.json');
-
-// Ensure data directory exists
-async function ensureDataDirectory() {
-  try {
-    await fs.access(dataDirectory);
-  } catch {
-    await fs.mkdir(dataDirectory, { recursive: true });
-  }
-}
-
-// Read surveys from file
-async function readSurveys(): Promise<Survey[]> {
-  try {
-    const data = await fs.readFile(surveysFile, 'utf8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-// Write surveys to file
-async function writeSurveys(surveys: Survey[]) {
-  await fs.writeFile(surveysFile, JSON.stringify(surveys, null, 2));
-}
 
 // Get all surveys
 export async function GET() {
   try {
-    await ensureDataDirectory();
-    const surveys = await readSurveys();
+    const surveys = await getSurveys();
     return NextResponse.json(surveys);
   } catch (error) {
     console.error('Error reading surveys:', error);
@@ -58,11 +29,9 @@ export async function POST(request: Request) {
       );
     }
 
-    await ensureDataDirectory();
-    const surveys = await readSurveys();
-
-    // Check if survey with same ID exists
+    const surveys = await getSurveys();
     const existingSurveyIndex = surveys.findIndex(s => s.id === survey.id);
+
     if (existingSurveyIndex >= 0) {
       surveys[existingSurveyIndex] = survey;
     } else {
@@ -133,8 +102,7 @@ export async function DELETE(request: Request) {
       );
     }
 
-    await ensureDataDirectory();
-    const surveys = await readSurveys();
+    const surveys = await getSurveys();
     const filteredSurveys = surveys.filter(survey => survey.id !== id);
 
     if (filteredSurveys.length === surveys.length) {
