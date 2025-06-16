@@ -1,6 +1,10 @@
 import Image from 'next/image';
 
-export default function LoadingScreen() {
+interface LoadingScreenProps {
+  message?: string;
+}
+
+export default function LoadingScreen({ message }: LoadingScreenProps) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100">
       <div className="relative p-12 rounded-3xl bg-white/70 backdrop-blur-xl border border-white/20 shadow-2xl flex flex-col items-center min-w-[400px]">
@@ -46,6 +50,11 @@ export default function LoadingScreen() {
             </div>
           </div>
         </div>
+
+        {/* Loading Message */}
+        {message && (
+          <p className="text-lg text-gray-600 text-center font-medium">{message}</p>
+        )}
       </div>
     </div>
   );
