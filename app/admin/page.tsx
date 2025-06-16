@@ -46,9 +46,10 @@ export default function AdminPage() {
 
   const loadData = async () => {
     try {
-      const [surveysRes, responsesRes] = await Promise.all([
+      const [surveysRes, responsesRes, usersRes] = await Promise.all([
         fetch("/api/surveys"),
-        fetch("/api/responses")
+        fetch("/api/responses"),
+        fetch("/api/users")
       ]);
 
       if (surveysRes.ok) {
@@ -59,6 +60,11 @@ export default function AdminPage() {
       if (responsesRes.ok) {
         const responsesData = await responsesRes.json();
         setResponses(responsesData);
+      }
+
+      if (usersRes.ok) {
+        const usersData = await usersRes.json();
+        setUsers(usersData);
       }
     } catch (error) {
       console.error("Error loading data:", error);

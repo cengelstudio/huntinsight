@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const users = getUsers();
+    const users = await getUsers();
     return NextResponse.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);

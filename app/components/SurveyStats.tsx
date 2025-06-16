@@ -12,6 +12,7 @@ export default function SurveyStats({ survey, responses, users }: SurveyStatsPro
   const [selectedUserResponse, setSelectedUserResponse] = useState<Response | null>(null);
 
   const getUserName = (userId: string) => {
+    if (!Array.isArray(users)) return 'Bilinmeyen Kullanıcı';
     const user = users.find(u => u.id === userId);
     if (user) return `${user.name} ${user.surname}`;
     return 'Bilinmeyen Kullanıcı';
