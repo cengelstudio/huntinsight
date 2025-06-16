@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Question, Option, Survey } from '../types/index';
+import LoadingScreen from './LoadingScreen';
 
 export default function Survey() {
   const router = useRouter();
@@ -128,11 +129,7 @@ export default function Survey() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
-    );
+    return <LoadingScreen message="Anket yükleniyor..." />;
   }
 
   if (!currentQuestion) {

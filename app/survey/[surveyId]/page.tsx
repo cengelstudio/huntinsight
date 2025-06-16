@@ -5,6 +5,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Survey, Question, Answer, Option } from "../../types";
 import Image from "next/image";
 import ErrorPage from '@/app/components/ErrorPage';
+import LoadingScreen from '../../components/LoadingScreen';
 
 export default function SurveyPage() {
   const params = useParams();
@@ -249,21 +250,7 @@ export default function SurveyPage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-        <div className="p-8 rounded-2xl bg-white shadow-xl flex flex-col items-center space-y-4">
-          <div className="w-32 h-32 relative mb-4">
-            <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} />
-          </div>
-          <div className="animate-pulse flex space-x-4">
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-          </div>
-          <div className="text-xl font-medium text-gray-700">Yükleniyor...</div>
-        </div>
-      </div>
-    );
+    return <LoadingScreen message="Anket yükleniyor..." />;
   }
 
   if (error) {

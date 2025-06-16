@@ -7,6 +7,7 @@ import Image from "next/image";
 import SurveyFlowModal from "../components/SurveyFlowModal";
 import SurveyStatsModal from "../components/SurveyStatsModal";
 import Masonry from 'react-masonry-css';
+import LoadingScreen from '../components/LoadingScreen';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -210,14 +211,14 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50"
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-75"
               >
                 {loading ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
+                    <div className="relative w-5 h-5 mr-3">
+                      <div className="absolute inset-0 border-2 border-white/20 rounded-full"></div>
+                      <div className="absolute inset-0 border-2 border-white border-t-transparent rounded-full animate-[spin_0.6s_linear_infinite]"></div>
+                    </div>
                     Giriş Yapılıyor...
                   </>
                 ) : (

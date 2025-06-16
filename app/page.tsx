@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Survey } from './types';
 import Image from 'next/image';
+import LoadingScreen from './components/LoadingScreen';
 
 export default function Home() {
   const router = useRouter();
@@ -29,21 +30,7 @@ export default function Home() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center">
-        <div className="p-8 rounded-2xl bg-white shadow-xl flex flex-col items-center space-y-4">
-          <div className="w-48 h-16 relative mb-4">
-            <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
-          </div>
-          <div className="animate-pulse flex space-x-4">
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-            <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
-          </div>
-          <div className="text-xl font-medium text-gray-700">Yükleniyor...</div>
-        </div>
-      </div>
-    );
+    return <LoadingScreen message="Anketler yükleniyor..." />;
   }
 
   return (
