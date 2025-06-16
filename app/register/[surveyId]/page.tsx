@@ -67,8 +67,12 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
     }
   };
 
+  if (loading) {
+    return <LoadingScreen message="Bilgileriniz kaydediliyor..." />;
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-xl mx-auto">
         {/* Logo and Header */}
         <div className="text-center mb-12">
@@ -82,139 +86,136 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8 backdrop-blur-sm border border-white/20">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name Field */}
+            {/* Form Fields */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                 Ad
               </label>
-              <div className="relative rounded-xl shadow-sm">
+              <div className="mt-1">
                 <input
                   type="text"
-                  id="name"
                   name="name"
+                  id="name"
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
                   placeholder="Adınızı giriniz"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
               </div>
             </div>
 
-            {/* Surname Field */}
             <div>
-              <label htmlFor="surname" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="surname" className="block text-sm font-medium text-gray-700">
                 Soyad
               </label>
-              <div className="relative rounded-xl shadow-sm">
+              <div className="mt-1">
                 <input
                   type="text"
-                  id="surname"
                   name="surname"
+                  id="surname"
                   required
                   value={formData.surname}
                   onChange={handleChange}
-                  className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
                   placeholder="Soyadınızı giriniz"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
               </div>
             </div>
 
-            {/* TRNC ID Field */}
             <div>
-              <label htmlFor="trnc_id" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="trnc_id" className="block text-sm font-medium text-gray-700">
                 KKTC Kimlik No
               </label>
-              <div className="relative rounded-xl shadow-sm">
+              <div className="mt-1">
                 <input
                   type="text"
-                  id="trnc_id"
                   name="trnc_id"
+                  id="trnc_id"
                   required
                   value={formData.trnc_id}
                   onChange={handleChange}
-                  className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
-                  placeholder="Kimlik numaranızı giriniz"
+                  placeholder="KKTC kimlik numaranızı giriniz"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-                  </svg>
-                </div>
               </div>
             </div>
 
-            {/* Hunting License Field */}
             <div>
-              <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700 mb-2">
-                Av Ruhsat No
+              <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700">
+                Avlanma İzin No
               </label>
-              <div className="relative rounded-xl shadow-sm">
+              <div className="mt-1">
                 <input
                   type="text"
-                  id="hunting_license"
                   name="hunting_license"
+                  id="hunting_license"
                   required
                   value={formData.hunting_license}
                   onChange={handleChange}
-                  className="block w-full rounded-xl border-gray-200 pr-10 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200"
-                  placeholder="Ruhsat numaranızı giriniz"
+                  placeholder="Avlanma izin numaranızı giriniz"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                  </svg>
-                </div>
               </div>
             </div>
 
-            {/* Error Message */}
             {error && (
-              <div className="rounded-xl bg-red-50 p-4 animate-shake">
+              <div className="rounded-xl bg-red-50 p-4">
                 <div className="flex">
                   <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-red-800">{error}</p>
+                    <h3 className="text-sm font-medium text-red-800">{error}</h3>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-75"
-            >
-              {loading ? (
-                <>
-                  <div className="relative w-5 h-5 mr-3">
-                    <div className="absolute inset-0 border-2 border-white/20 rounded-full"></div>
-                    <div className="absolute inset-0 border-2 border-white border-t-transparent rounded-full animate-[spin_0.6s_linear_infinite]"></div>
-                  </div>
-                  Kaydediliyor...
-                </>
-              ) : (
-                'Ankete Başla'
-              )}
-            </button>
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+              >
+                {loading ? (
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  'Ankete Başla'
+                )}
+              </button>
+            </div>
           </form>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-16 pt-8 border-t border-gray-200">
+          <div className="text-center">
+            <div className="flex justify-center space-x-6 mb-4">
+              <a href="https://www.facebook.com/kktcavcilik" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
+                <span className="sr-only">Facebook</span>
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                </svg>
+              </a>
+              <a href="http://avfed.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
+                <span className="sr-only">Web Sitesi</span>
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+              </a>
+            </div>
+            <p className="text-gray-600">
+              © {new Date().getFullYear()} K.K.T.C. Avcılık Federasyonu. Tüm hakları saklıdır.
+            </p>
+          </div>
         </div>
       </div>
     </div>

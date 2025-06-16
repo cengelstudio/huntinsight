@@ -7,7 +7,6 @@ import Image from "next/image";
 import SurveyFlowModal from "../components/SurveyFlowModal";
 import SurveyStatsModal from "../components/SurveyStatsModal";
 import Masonry from 'react-masonry-css';
-import LoadingScreen from '../components/LoadingScreen';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -233,11 +232,12 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white py-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-8">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-12">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 relative">
+            <div className="w-14 h-14 relative">
               <Image
                 src="/logo.png"
                 alt="Hunt Insight Logo"
@@ -246,12 +246,18 @@ export default function AdminPage() {
                 priority
               />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">Admin Paneli</h1>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Admin Paneli</h1>
+              <p className="text-gray-600 mt-1">Anketleri yönetin ve sonuçları analiz edin</p>
+            </div>
           </div>
           <button
             onClick={handleLogout}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-xl text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-sm hover:shadow-md"
           >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
             Çıkış Yap
           </button>
         </div>
@@ -260,26 +266,34 @@ export default function AdminPage() {
           <div className="space-y-8">
             {/* Anketler Bölümü */}
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900">Anketler</h2>
+              <div className="flex justify-between items-center mb-8">
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-900">Anketler</h2>
+                  <p className="text-gray-600 mt-1">Toplam {surveys.length} anket bulunuyor</p>
+                </div>
                 <button
                   onClick={() => setShowSurveyForm(true)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md"
                 >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
                   Yeni Anket
                 </button>
               </div>
 
               {surveys.length === 0 ? (
-                <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-                  <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
-                  <h3 className="mt-4 text-lg font-medium text-gray-900">Henüz Anket Yok</h3>
-                  <p className="mt-2 text-gray-600">İlk anketinizi oluşturmak için "Yeni Anket" butonuna tıklayın.</p>
+                <div className="bg-white rounded-2xl shadow-xl p-12 text-center backdrop-blur-sm border border-white/20">
+                  <div className="w-20 h-20 mx-auto bg-blue-50 rounded-full flex items-center justify-center mb-6">
+                    <svg className="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Henüz Anket Yok</h3>
+                  <p className="text-gray-600 mb-6">İlk anketinizi oluşturmak için &ldquo;Yeni Anket&rdquo; butonuna tıklayın.</p>
                   <button
                     onClick={() => setShowSurveyForm(true)}
-                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -294,30 +308,40 @@ export default function AdminPage() {
                   columnClassName="my-masonry-grid_column"
                 >
                   {surveys.map((survey) => (
-                    <div key={survey.id} className="mb-6 bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-200">
+                    <div key={survey.id} className="mb-6 bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-200 backdrop-blur-sm border border-white/20">
                       <div className="p-6">
-                        <div className="flex-1 min-w-0 mb-4">
+                        <div className="flex-1 min-w-0 mb-6">
                           <h3 className="text-xl font-semibold text-gray-900 mb-2">
                             {survey.title}
                           </h3>
                           <p className="text-gray-600">{survey.description}</p>
                         </div>
 
-                        <div className="flex flex-col space-y-3">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">Soru Sayısı:</span>
-                            <span className="font-medium text-gray-900">{survey.questions.length}</span>
+                        <div className="flex flex-col space-y-4">
+                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <div className="flex items-center">
+                              <svg className="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              <span className="text-sm text-gray-600">Soru Sayısı</span>
+                            </div>
+                            <span className="text-sm font-medium text-gray-900">{survey.questions.length}</span>
                           </div>
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">Yanıt Sayısı:</span>
-                            <span className="font-medium text-gray-900">{getSurveyResponses(survey.id).length}</span>
+                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <div className="flex items-center">
+                              <svg className="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                              </svg>
+                              <span className="text-sm text-gray-600">Yanıt Sayısı</span>
+                            </div>
+                            <span className="text-sm font-medium text-gray-900">{getSurveyResponses(survey.id).length}</span>
                           </div>
                         </div>
 
-                        <div className="mt-4 flex justify-end space-x-2">
+                        <div className="mt-6 flex justify-end space-x-2">
                           <button
                             onClick={() => handleShowStats(survey)}
-                            className="inline-flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors duration-200"
+                            className="inline-flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200"
                             title="İstatistikleri Görüntüle"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -326,7 +350,7 @@ export default function AdminPage() {
                           </button>
                           <button
                             onClick={() => handleEditSurvey(survey)}
-                            className="inline-flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors duration-200"
+                            className="inline-flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200"
                             title="Düzenle"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -335,7 +359,7 @@ export default function AdminPage() {
                           </button>
                           <button
                             onClick={() => handleDeleteSurvey(survey.id)}
-                            className="inline-flex items-center p-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200"
+                            className="inline-flex items-center p-2 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
                             title="Sil"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -352,16 +376,21 @@ export default function AdminPage() {
           </div>
         ) : (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900">
-                {editingSurvey ? 'Anketi Düzenle' : 'Yeni Anket Oluştur'}
-              </h2>
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-900">
+                  {editingSurvey ? 'Anketi Düzenle' : 'Yeni Anket Oluştur'}
+                </h2>
+                <p className="text-gray-600 mt-1">
+                  {editingSurvey ? 'Mevcut anketi düzenleyin' : 'Yeni bir anket oluşturun'}
+                </p>
+              </div>
               <button
                 onClick={() => {
                   setShowSurveyForm(false);
                   setEditingSurvey(null);
                 }}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                className="inline-flex items-center px-5 py-2.5 border border-gray-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -370,8 +399,8 @@ export default function AdminPage() {
               </button>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl">
-              <div className="p-6">
+            <div className="bg-white rounded-2xl shadow-xl backdrop-blur-sm border border-white/20">
+              <div className="p-8">
                 <SurveyCreator
                   onSave={handleSaveSurvey}
                   initialSurvey={editingSurvey}

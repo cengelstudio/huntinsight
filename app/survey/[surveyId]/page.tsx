@@ -19,6 +19,7 @@ export default function SurveyPage() {
   const [questionSequence, setQuestionSequence] = useState<string[]>([]);
   const [totalExpectedQuestions, setTotalExpectedQuestions] = useState<number>(0);
   const [referencedQuestions, setReferencedQuestions] = useState<Set<string>>(new Set());
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -153,8 +154,12 @@ export default function SurveyPage() {
     return survey.questions.find(q => q.id === questionSequence[currentQuestionIndex]) || null;
   };
 
-  const handleAnswer = async (option: Option) => {
-    if (!survey) return;
+  const handleOptionSelect = (option: Option) => {
+    setSelectedOption(option);
+  };
+
+  const handleNextQuestion = () => {
+    if (!selectedOption || !survey) return;
 
     const currentQuestion = getCurrentQuestion();
     if (!currentQuestion) return;
@@ -162,17 +167,17 @@ export default function SurveyPage() {
     // Save the answer
     const newAnswer: Answer = {
       questionId: currentQuestion.id,
-      optionId: option.id,
+      optionId: selectedOption.id,
     };
 
     setAnswers([...answers, newAnswer]);
 
     // Get next question based on the selected option's nextQuestionId
-    if (option.nextQuestionId) {
-      const nextQuestion = survey.questions.find(q => q.id === option.nextQuestionId);
+    if (selectedOption.nextQuestionId) {
+      const nextQuestion = survey.questions.find(q => q.id === selectedOption.nextQuestionId);
       if (nextQuestion) {
         // Update question sequence
-        const newSequence = [...questionSequence.slice(0, currentQuestionIndex + 1), option.nextQuestionId];
+        const newSequence = [...questionSequence.slice(0, currentQuestionIndex + 1), selectedOption.nextQuestionId];
         setQuestionSequence(newSequence);
 
         // Update total expected questions based on the new path
@@ -180,6 +185,7 @@ export default function SurveyPage() {
         setTotalExpectedQuestions(currentQuestionIndex + 1 + newTotal);
 
         setCurrentQuestionIndex(prev => prev + 1);
+        setSelectedOption(null);
         return;
       }
     }
@@ -198,6 +204,7 @@ export default function SurveyPage() {
         setTotalExpectedQuestions(currentQuestionIndex + 1 + newTotal);
 
         setCurrentQuestionIndex(prev => prev + 1);
+        setSelectedOption(null);
       } else {
         // If next question is referenced but not selected, survey is complete
         submitSurvey([...answers, newAnswer]);
@@ -249,6 +256,31 @@ export default function SurveyPage() {
     return (currentQuestionIndex + 1) / totalExpectedQuestions * 100;
   };
 
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+      // Remove the last answer when going back
+      setAnswers(prev => prev.slice(0, -1));
+    }
+  };
+
+  const handleCompleteQuestion = () => {
+    if (!selectedOption || !survey) return;
+
+    const currentQuestion = getCurrentQuestion();
+    if (!currentQuestion) return;
+
+    // Save the last answer
+    const newAnswer: Answer = {
+      questionId: currentQuestion.id,
+      optionId: selectedOption.id,
+    };
+
+    // Add the last answer to the answers array and submit
+    const finalAnswers = [...answers, newAnswer];
+    submitSurvey(finalAnswers);
+  };
+
   if (loading) {
     return <LoadingScreen message="Anket yükleniyor..." />;
   }
@@ -263,7 +295,7 @@ export default function SurveyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -273,7 +305,7 @@ export default function SurveyPage() {
         </div>
 
         {/* Survey Info and Progress */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 backdrop-blur-sm border border-white/20">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-3">{survey?.title}</h1>
             <div className="flex items-center justify-center space-x-2 text-gray-600">
@@ -284,7 +316,7 @@ export default function SurveyPage() {
           </div>
 
           {/* Progress Bar */}
-          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
             <div
               className="h-full bg-blue-600 transition-all duration-500 ease-in-out rounded-full"
               style={{
@@ -295,7 +327,7 @@ export default function SurveyPage() {
         </div>
 
         {/* Question Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 backdrop-blur-sm border border-white/20">
           {/* Question */}
           <div className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">{currentQuestion.text}</h2>
@@ -306,38 +338,103 @@ export default function SurveyPage() {
             {currentQuestion.options.map((option) => (
               <button
                 key={option.id}
-                onClick={() => handleAnswer(option)}
+                onClick={() => handleOptionSelect(option)}
                 className="w-full group relative"
               >
                 <div className="absolute inset-0 bg-blue-50 rounded-xl transition-all duration-200
                               transform scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100" />
-                <div className="relative flex items-center w-full px-6 py-4 rounded-xl border-2
-                              border-gray-200 group-hover:border-blue-500 transition-all duration-200">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-gray-300
-                                group-hover:border-blue-500 flex items-center justify-center mr-4">
-                    <div className="w-3 h-3 rounded-full bg-transparent
-                                  group-hover:bg-blue-500 transition-all duration-200" />
+                <div className={`relative flex items-center w-full px-6 py-4 rounded-xl border-2
+                              ${selectedOption?.id === option.id
+                                ? 'border-blue-500 bg-blue-50'
+                                : 'border-gray-200 group-hover:border-blue-500'}
+                              transition-all duration-200`}>
+                  <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2
+                                ${selectedOption?.id === option.id
+                                  ? 'border-blue-500'
+                                  : 'border-gray-300 group-hover:border-blue-500'}
+                                flex items-center justify-center mr-4`}>
+                    <div className={`w-3 h-3 rounded-full transition-all duration-200
+                                  ${selectedOption?.id === option.id
+                                    ? 'bg-blue-500'
+                                    : 'bg-transparent group-hover:bg-blue-500'}`} />
                   </div>
                   <span className="text-lg text-gray-700 group-hover:text-gray-900 font-medium">
                     {option.text}
                   </span>
-                  <div className="ml-auto transform translate-x-2 opacity-0
-                                group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
-                    <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
                 </div>
               </button>
             ))}
           </div>
+
+          {/* Navigation Buttons */}
+          <div className="mt-8 flex justify-between items-center space-x-4">
+            <button
+              onClick={handlePreviousQuestion}
+              disabled={currentQuestionIndex === 0}
+              className={`flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-200 min-w-[160px]
+                        ${currentQuestionIndex === 0
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 border-2 border-blue-200 hover:border-blue-300'}`}
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Önceki Soru
+            </button>
+
+            {(!getNextSequentialQuestion(currentQuestion.id) && !currentQuestion.options.some(opt => opt.nextQuestionId)) ? (
+              <button
+                onClick={handleCompleteQuestion}
+                disabled={!selectedOption}
+                className={`flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 min-w-[160px]
+                          ${!selectedOption
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'}`}
+              >
+                <span className="mr-2">Anketi Tamamla</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </button>
+            ) : (
+              <button
+                onClick={handleNextQuestion}
+                disabled={!selectedOption}
+                className={`flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 min-w-[160px]
+                          ${!selectedOption
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'}`}
+              >
+                <span className="mr-2">Sıradaki Soru</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Footer */}
-        <div className="text-center">
-          <p className="text-sm text-gray-500">
-            K.K.T.C. Avcılık Federasyonu © {new Date().getFullYear()} | Tüm Hakları Saklıdır
-          </p>
+        <div className="mt-16 pt-8 border-t border-gray-200">
+          <div className="text-center">
+            <div className="flex justify-center space-x-6 mb-4">
+              <a href="https://www.facebook.com/kktcavcilik" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
+                <span className="sr-only">Facebook</span>
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                </svg>
+              </a>
+              <a href="http://avfed.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
+                <span className="sr-only">Web Sitesi</span>
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+              </a>
+            </div>
+            <p className="text-gray-600">
+              © {new Date().getFullYear()} K.K.T.C. Avcılık Federasyonu. Tüm hakları saklıdır.
+            </p>
+          </div>
         </div>
       </div>
     </div>
