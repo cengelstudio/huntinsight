@@ -68,16 +68,3 @@ huntinsight/
    ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Environment Variables
-
-Create a `.env.local` file in the root directory with the following variables:
-
-```env
-ADMIN_USERNAME=your_admin_username
-ADMIN_PASSWORD=your_admin_password
-```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
