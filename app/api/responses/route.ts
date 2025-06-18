@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { Response } from '@/app/types';
+import { initializeStorage } from '@/app/utils/storage';
 
 export async function GET() {
   try {
+    await initializeStorage();
     const responsesPath = path.join(process.cwd(), 'data', 'responses.json');
     const responsesData = await fs.readFile(responsesPath, 'utf-8');
     const responses: Response[] = JSON.parse(responsesData);
@@ -20,6 +22,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await initializeStorage();
     const body = await request.json();
     console.log('Received request body:', body);
     const { surveyId, userId, answers, name, surname } = body;

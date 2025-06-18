@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Survey, Question, QuestionOption } from "../types";
+import { Survey, Question, Option } from "../types";
 
 interface SurveyCreatorProps {
   onSave: (survey: Survey) => void;
@@ -112,6 +112,10 @@ export default function SurveyCreator({ onSave, initialSurvey }: SurveyCreatorPr
       id: editingQuestionId || crypto.randomUUID(),
       text: currentQuestion.text,
       options: currentQuestion.options.filter(opt => opt.text.trim() !== ""),
+      nextQuestionMap: (currentQuestion.options || []).reduce((map, opt) => {
+        map[opt.id] = opt.nextQuestionId || null;
+        return map;
+      }, {} as Record<string, string | null>),
     };
 
     setSurvey((prev) => ({
@@ -147,9 +151,11 @@ export default function SurveyCreator({ onSave, initialSurvey }: SurveyCreatorPr
 
     const newSurvey: Survey = {
       id: initialSurvey?.id || Date.now().toString(),
-      title: survey.title,
-      description: survey.description,
-      questions: survey.questions,
+      title: survey.title!,
+      description: survey.description!,
+      questions: survey.questions || [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     onSave(newSurvey);
@@ -220,7 +226,7 @@ export default function SurveyCreator({ onSave, initialSurvey }: SurveyCreatorPr
                   ref={provided.innerRef}
                   className="space-y-4"
                 >
-                  {survey.questions.map((question, index) => (
+                  {survey.questions?.map((question, index) => (
                     <Draggable
                       key={question.id}
                       draggableId={question.id}
@@ -247,7 +253,7 @@ export default function SurveyCreator({ onSave, initialSurvey }: SurveyCreatorPr
                                 <input
                                   type="number"
                                   min="1"
-                                  max={survey.questions.length}
+                                  max={survey.questions?.length ?? 1}
                                   value={index + 1}
                                   onChange={(e) => updateQuestionOrder(question.id, parseInt(e.target.value))}
                                   className="w-16 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"

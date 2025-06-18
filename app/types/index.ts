@@ -4,6 +4,7 @@ export interface User {
   surname: string;
   trnc_id: string;
   hunting_license: string;
+  surveyId: string;
   createdAt: string;
 }
 

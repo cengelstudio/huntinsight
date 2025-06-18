@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { User } from "../../types";
+import { initializeStorage } from "@/app/utils/storage";
 
 export async function POST(request: Request) {
   try {
+    await initializeStorage();
     const body = await request.json();
     const { name, surname, trnc_id, hunting_license } = body;
 
@@ -37,6 +39,7 @@ export async function POST(request: Request) {
       surname,
       trnc_id,
       hunting_license,
+      createdAt: new Date().toISOString(),
     };
 
     // Save user

@@ -1,11 +1,11 @@
 'use client';
 
-import { Survey, Question, UserResponse } from '@/app/types/index';
+import { Survey, Question, Response } from '@/app/types/index';
 import { useEffect, useState } from 'react';
 
 interface SurveyFlowModalProps {
   survey: Survey;
-  userResponse: UserResponse;
+  userResponse: Response;
   onClose: () => void;
 }
 

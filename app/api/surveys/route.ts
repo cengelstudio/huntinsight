@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getSurveys, writeSurveys } from '@/app/utils/storage';
+import { getSurveys, writeSurveys, initializeStorage } from '@/app/utils/storage';
 import { Survey } from '@/app/types';
+import path from 'path';
+import fs from "fs/promises";
 
 // Get all surveys
 export async function GET() {
   try {
+    await initializeStorage();
     const surveys = await getSurveys();
     return NextResponse.json(surveys);
   } catch (error) {
@@ -19,6 +22,7 @@ export async function GET() {
 // Create a new survey
 export async function POST(request: Request) {
   try {
+    await initializeStorage();
     const survey: Survey = await request.json();
 
     // Validate survey data
@@ -52,6 +56,7 @@ export async function POST(request: Request) {
 // Update a survey
 export async function PUT(request: Request) {
   try {
+    await initializeStorage();
     const survey: Survey = await request.json();
 
     // Validate survey data
@@ -93,6 +98,7 @@ export async function PUT(request: Request) {
 // Delete a survey
 export async function DELETE(request: Request) {
   try {
+    await initializeStorage();
     const { id } = await request.json();
 
     if (!id) {

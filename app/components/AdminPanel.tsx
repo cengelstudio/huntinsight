@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Survey, UserResponse, User, Question } from '../types';
+import { Survey, User, Question, Response } from '../types';
 
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [surveys, setSurveys] = useState<Survey[]>([]);
-  const [responses, setResponses] = useState<UserResponse[]>([]);
+  const [responses, setResponses] = useState<Response[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [selectedSurvey, setSelectedSurvey] = useState<Survey | null>(null);
   const [newQuestion, setNewQuestion] = useState({

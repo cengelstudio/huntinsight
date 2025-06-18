@@ -34,6 +34,20 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    // Client-side validation for name and surname
+    if (formData.name.trim().length < 2) {
+      setError("İsim en az 2 harf olmalıdır.");
+      return;
+    }
+    if (formData.surname.trim().length < 2) {
+      setError("Soyisim en az 2 harf olmalıdır.");
+      return;
+    }
+    // Client-side validation for trnc_id
+    if (!/^\d{10,11}$/.test(formData.trnc_id)) {
+      setError("Kimlik numarası en az 10, en fazla 11 haneli ve sadece rakamlardan oluşmalıdır.");
+      return;
+    }
     setLoading(true);
 
     try {
@@ -136,7 +150,12 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                   id="trnc_id"
                   required
                   value={formData.trnc_id}
-                  onChange={handleChange}
+                  onChange={e => {
+                    // Only allow digits and max 11 characters
+                    let value = e.target.value.replace(/\D/g, "");
+                    if (value.length > 11) value = value.slice(0, 11);
+                    setFormData(prev => ({ ...prev, trnc_id: value }));
+                  }}
                   placeholder="KKTC kimlik numaranızı giriniz"
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
@@ -145,7 +164,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
 
             <div>
               <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700">
-                Avlanma İzin No
+                Av Ruhsat No
               </label>
               <div className="mt-1">
                 <input
@@ -155,7 +174,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                   required
                   value={formData.hunting_license}
                   onChange={handleChange}
-                  placeholder="Avlanma izin numaranızı giriniz"
+                  placeholder="Av ruhsat numaranızı giriniz"
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>

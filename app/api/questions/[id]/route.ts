@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const surveys = getSurveys();
+    const surveys = await getSurveys();
     const survey = surveys[0]; // For now, we're using the first survey
 
     if (params.id === 'first') {
