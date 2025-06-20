@@ -56,11 +56,11 @@ export default function RegisterPage() {
       <div className="max-w-xl mx-auto">
         {/* Logo and Header */}
         <div className="text-center mb-12">
-          <div className="w-48 h-16 relative mx-auto mb-8">
+          <div className="w-48 h-16 relative mx-auto mb-8 cursor-pointer" onClick={() => router.push('/')}>
             <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">Av Formu</h1>
-          <p className="text-lg text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3 select-none">Av Formu</h1>
+          <p className="text-lg text-gray-600 select-none">
             Ankete başlamadan önce lütfen bilgilerinizi giriniz
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2 select-none">
                 Ad
               </label>
               <div className="relative rounded-xl shadow-sm">
@@ -92,7 +92,7 @@ export default function RegisterPage() {
 
             {/* Surname Field */}
             <div>
-              <label htmlFor="surname" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="surname" className="block text-sm font-medium text-gray-700 mb-2 select-none">
                 Soyad
               </label>
               <div className="relative rounded-xl shadow-sm">
@@ -114,7 +114,7 @@ export default function RegisterPage() {
 
             {/* TRNC ID Field */}
             <div>
-              <label htmlFor="trnc_id" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="trnc_id" className="block text-sm font-medium text-gray-700 mb-2 select-none">
                 KKTC Kimlik No
               </label>
               <div className="relative rounded-xl shadow-sm">
@@ -136,7 +136,7 @@ export default function RegisterPage() {
 
             {/* Hunting License Field */}
             <div>
-              <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700 mb-2 select-none">
                 Av Ruhsat No
               </label>
               <div className="relative rounded-xl shadow-sm">
@@ -166,7 +166,7 @@ export default function RegisterPage() {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-red-800">{error}</p>
+                    <p className="text-sm font-medium text-red-800 select-none">{error}</p>
                   </div>
                 </div>
               </div>
@@ -184,10 +184,10 @@ export default function RegisterPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Kaydediliyor...
+                  <span className="select-none">Kaydediliyor...</span>
                 </>
               ) : (
-                'Ankete Başla'
+                <span className="select-none">Ankete Başla</span>
               )}
             </button>
           </form>

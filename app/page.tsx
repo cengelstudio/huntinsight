@@ -38,13 +38,13 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <div className="w-48 h-16 relative mx-auto mb-8">
+          <div className="w-48 h-16 relative mx-auto mb-8 cursor-pointer" onClick={() => router.push('/')}>
             <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight select-none">
             Avcı Anket Platformu
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto select-none">
             K.K.T.C. avcılarının görüşlerini değerlendirmek için hazırlanmış modern anket platformuna hoş geldiniz.
           </p>
         </div>
@@ -57,8 +57,8 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Kolay Kullanım</h3>
-            <p className="text-gray-600">Basit ve kullanıcı dostu arayüz ile anketleri hızlıca tamamlayın.</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 select-none">Kolay Kullanım</h3>
+            <p className="text-gray-600 select-none">Basit ve kullanıcı dostu arayüz ile anketleri hızlıca tamamlayın.</p>
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -67,8 +67,8 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Hızlı Yanıt</h3>
-            <p className="text-gray-600">Anketleri ortalama 5 dakika içinde tamamlayabilirsiniz.</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 select-none">Hızlı Yanıt</h3>
+            <p className="text-gray-600 select-none">Anketleri ortalama 5 dakika içinde tamamlayabilirsiniz.</p>
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -77,15 +77,15 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Detaylı Analiz</h3>
-            <p className="text-gray-600">Yanıtlarınız federasyon tarafından detaylıca analiz edilir.</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 select-none">Detaylı Analiz</h3>
+            <p className="text-gray-600 select-none">Yanıtlarınız federasyon tarafından detaylıca analiz edilir.</p>
           </div>
         </div>
 
         {/* Active Surveys Section */}
         <div className="text-center mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Aktif Anketler</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 select-none">Aktif Anketler</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-8 select-none">
             Aşağıdaki anketlere katılarak görüşlerinizi bizimle paylaşabilirsiniz.
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function Home() {
             >
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                  <h2 className="text-2xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 select-none">
                     {survey.title}
                   </h2>
                   <div className="bg-blue-100 rounded-full p-2 group-hover:bg-blue-200 transition-colors duration-300">
@@ -113,10 +113,10 @@ export default function Home() {
                     </svg>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-6 line-clamp-3">
+                <p className="text-gray-600 mb-6 line-clamp-3 select-none">
                   {survey.description}
                 </p>
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex items-center text-sm text-gray-500 select-none">
                   <span className="flex items-center">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -136,10 +136,10 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">
+            <h3 className="text-xl font-medium text-gray-900 mb-2 select-none">
               Aktif Anket Bulunmuyor
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 select-none">
               Şu anda katılabileceğiniz aktif bir anket bulunmamaktadır. Lütfen daha sonra tekrar kontrol ediniz.
             </p>
           </div>

@@ -299,7 +299,7 @@ export default function SurveyPage() {
       <div className="max-w-4xl mx-auto">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-48 h-16 relative mx-auto">
+          <div className="w-48 h-16 relative mx-auto cursor-pointer" onClick={() => router.push('/')}>
             <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
           </div>
         </div>
@@ -307,8 +307,8 @@ export default function SurveyPage() {
         {/* Survey Info and Progress */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 backdrop-blur-sm border border-white/20">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">{survey?.title}</h1>
-            <div className="flex items-center justify-center space-x-2 text-gray-600">
+            <h1 className="text-3xl font-bold text-gray-900 mb-3 select-none">{survey?.title}</h1>
+            <div className="flex items-center justify-center space-x-2 text-gray-600 select-none">
               <span className="text-lg">Soru {currentQuestionIndex + 1} / {totalExpectedQuestions}</span>
               <div className="w-2 h-2 rounded-full bg-gray-300"></div>
               <span className="text-lg">{Math.round(calculateProgress())}% Tamamlandı</span>
@@ -330,7 +330,7 @@ export default function SurveyPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 backdrop-blur-sm border border-white/20">
           {/* Question */}
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">{currentQuestion.text}</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4 select-none">{currentQuestion.text}</h2>
           </div>
 
           {/* Options */}
@@ -358,7 +358,7 @@ export default function SurveyPage() {
                                     ? 'bg-blue-500'
                                     : 'bg-transparent group-hover:bg-blue-500'}`} />
                   </div>
-                  <span className="text-lg text-gray-700 group-hover:text-gray-900 font-medium">
+                  <span className="text-lg text-gray-700 group-hover:text-gray-900 font-medium select-none">
                     {option.text}
                   </span>
                 </div>
@@ -379,7 +379,7 @@ export default function SurveyPage() {
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Önceki Soru
+              <span className="select-none">Önceki Soru</span>
             </button>
 
             {(!getNextSequentialQuestion(currentQuestion.id) && !currentQuestion.options.some(opt => opt.nextQuestionId)) ? (
@@ -391,7 +391,7 @@ export default function SurveyPage() {
                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                             : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'}`}
               >
-                <span className="mr-2">Anketi Tamamla</span>
+                <span className="mr-2 select-none">Anketi Tamamla</span>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -405,7 +405,7 @@ export default function SurveyPage() {
                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                             : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'}`}
               >
-                <span className="mr-2">Sıradaki Soru</span>
+                <span className="mr-2 select-none">Sıradaki Soru</span>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>

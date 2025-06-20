@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import LoadingScreen from '../../components/LoadingScreen';
+import { formatName } from '../../utils/nameFormatter';
 
 interface FormData {
   name: string;
@@ -31,20 +32,40 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
     }));
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    // Apply name formatting when user leaves the input field
+    if (name === 'name' || name === 'surname') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: formatName(value),
+      }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    // Ensure names are properly formatted before submission
+    const formattedFormData = {
+      ...formData,
+      name: formatName(formData.name),
+      surname: formatName(formData.surname),
+    };
+
     // Client-side validation for name and surname
-    if (formData.name.trim().length < 2) {
+    if (formattedFormData.name.trim().length < 2) {
       setError("İsim en az 2 harf olmalıdır.");
       return;
     }
-    if (formData.surname.trim().length < 2) {
+    if (formattedFormData.surname.trim().length < 2) {
       setError("Soyisim en az 2 harf olmalıdır.");
       return;
     }
     // Client-side validation for trnc_id
-    if (!/^\d{10,11}$/.test(formData.trnc_id)) {
+    if (!/^\d{10,11}$/.test(formattedFormData.trnc_id)) {
       setError("Kimlik numarası en az 10, en fazla 11 haneli ve sadece rakamlardan oluşmalıdır.");
       return;
     }
@@ -57,7 +78,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
+          ...formattedFormData,
           surveyId: params.surveyId
         }),
       });
@@ -90,11 +111,11 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
       <div className="max-w-xl mx-auto">
         {/* Logo and Header */}
         <div className="text-center mb-12">
-          <div className="w-48 h-16 relative mx-auto mb-8">
+          <div className="w-48 h-16 relative mx-auto mb-8 cursor-pointer" onClick={() => router.push('/')}>
             <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">Av Formu</h1>
-          <p className="text-lg text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3 select-none">Av Formu</h1>
+          <p className="text-lg text-gray-600 select-none">
             Ankete başlamadan önce lütfen bilgilerinizi giriniz
           </p>
         </div>
@@ -104,7 +125,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Form Fields */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 select-none">
                 Ad
               </label>
               <div className="mt-1">
@@ -113,8 +134,10 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                   name="name"
                   id="name"
                   required
+                  autoComplete="off"
                   value={formData.name}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="Adınızı giriniz"
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
@@ -122,7 +145,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
             </div>
 
             <div>
-              <label htmlFor="surname" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="surname" className="block text-sm font-medium text-gray-700 select-none">
                 Soyad
               </label>
               <div className="mt-1">
@@ -131,8 +154,10 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                   name="surname"
                   id="surname"
                   required
+                  autoComplete="off"
                   value={formData.surname}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="Soyadınızı giriniz"
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
@@ -140,7 +165,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
             </div>
 
             <div>
-              <label htmlFor="trnc_id" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="trnc_id" className="block text-sm font-medium text-gray-700 select-none">
                 KKTC Kimlik No
               </label>
               <div className="mt-1">
@@ -149,6 +174,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                   name="trnc_id"
                   id="trnc_id"
                   required
+                  autoComplete="off"
                   value={formData.trnc_id}
                   onChange={e => {
                     // Only allow digits and max 11 characters
@@ -163,7 +189,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
             </div>
 
             <div>
-              <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700 select-none">
                 Av Ruhsat No
               </label>
               <div className="mt-1">
@@ -172,6 +198,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                   name="hunting_license"
                   id="hunting_license"
                   required
+                  autoComplete="off"
                   value={formData.hunting_license}
                   onChange={handleChange}
                   placeholder="Av ruhsat numaranızı giriniz"
@@ -189,7 +216,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">{error}</h3>
+                    <h3 className="text-sm font-medium text-red-800 select-none">{error}</h3>
                   </div>
                 </div>
               </div>
@@ -207,7 +234,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
                 ) : (
-                  'Ankete Başla'
+                  <span className="select-none">Ankete Başla</span>
                 )}
               </button>
             </div>

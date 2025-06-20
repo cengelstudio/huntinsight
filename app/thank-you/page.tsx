@@ -11,7 +11,7 @@ export default function ThankYouPage() {
       <div className="max-w-xl mx-auto">
         {/* Logo */}
         <div className="text-center mb-12">
-          <div className="w-48 h-16 relative mx-auto mb-8">
+          <div className="w-48 h-16 relative mx-auto mb-8 cursor-pointer" onClick={() => router.push('/')}>
             <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
           </div>
         </div>
@@ -38,16 +38,16 @@ export default function ThankYouPage() {
           </div>
 
           {/* Thank You Message */}
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4 select-none">
             Teşekkür Ederiz!
           </h2>
-          <p className="text-xl text-gray-600 mb-3">
+          <p className="text-xl text-gray-600 mb-3 select-none">
             Anketi tamamladığınız için teşekkür ederiz.
           </p>
-          <p className="text-lg text-gray-500 mb-3">
+          <p className="text-lg text-gray-500 mb-3 select-none">
             Cevaplarınız başarıyla kaydedildi.
           </p>
-          <p className="text-lg text-gray-500 mb-8">
+          <p className="text-lg text-gray-500 mb-8 select-none">
             Katkılarınız bizim için çok değerli.
           </p>
 
@@ -69,7 +69,7 @@ export default function ThankYouPage() {
                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
               />
             </svg>
-            Ana Sayfaya Dön
+            <span className="select-none">Ana Sayfaya Dön</span>
           </button>
         </div>
 
