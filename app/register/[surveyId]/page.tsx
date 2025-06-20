@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import LoadingScreen from '../../components/LoadingScreen';
+import Footer from '../../components/Footer';
 import { formatName } from '../../utils/nameFormatter';
 
 interface FormData {
@@ -107,68 +108,90 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-indigo-600/5"></div>
+
+      <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
         {/* Logo and Header */}
         <div className="text-center mb-12">
-          <div className="w-48 h-16 relative mx-auto mb-8 cursor-pointer" onClick={() => router.push('/')}>
-            <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
+          <div className="w-56 h-20 relative mx-auto mb-8 transform hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => router.push('/')}>
+            <Image src="/logo-long.png" alt="AvGörüş Logo" fill style={{objectFit: "contain"}} priority />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3 select-none">Av Formu</h1>
-          <p className="text-lg text-gray-600 select-none">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 select-none">
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Av Formu
+            </span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 max-w-lg mx-auto leading-relaxed select-none">
             Ankete başlamadan önce lütfen bilgilerinizi giriniz
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 backdrop-blur-sm border border-white/20">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-10 border border-white/50">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Form Fields */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 select-none">
-                Ad
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  required
-                  autoComplete="off"
-                  value={formData.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="Adınızı giriniz"
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Name Field */}
+              <div className="space-y-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 select-none">
+                  Ad
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    required
+                    autoComplete="off"
+                    value={formData.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Adınızı giriniz"
+                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-lg"
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Surname Field */}
+              <div className="space-y-2">
+                <label htmlFor="surname" className="block text-sm font-semibold text-gray-700 select-none">
+                  Soyad
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="surname"
+                    id="surname"
+                    required
+                    autoComplete="off"
+                    value={formData.surname}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Soyadınızı giriniz"
+                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-lg"
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div>
-              <label htmlFor="surname" className="block text-sm font-medium text-gray-700 select-none">
-                Soyad
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="surname"
-                  id="surname"
-                  required
-                  autoComplete="off"
-                  value={formData.surname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="Soyadınızı giriniz"
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="trnc_id" className="block text-sm font-medium text-gray-700 select-none">
+            {/* TRNC ID Field */}
+            <div className="space-y-2">
+              <label htmlFor="trnc_id" className="block text-sm font-semibold text-gray-700 select-none">
                 KKTC Kimlik No
               </label>
-              <div className="mt-1">
+              <div className="relative">
                 <input
                   type="text"
                   name="trnc_id"
@@ -183,16 +206,22 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                     setFormData(prev => ({ ...prev, trnc_id: value }));
                   }}
                   placeholder="KKTC kimlik numaranızı giriniz"
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-lg"
                 />
+                <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                  </svg>
+                </div>
               </div>
             </div>
 
-            <div>
-              <label htmlFor="hunting_license" className="block text-sm font-medium text-gray-700 select-none">
+            {/* Hunting License Field */}
+            <div className="space-y-2">
+              <label htmlFor="hunting_license" className="block text-sm font-semibold text-gray-700 select-none">
                 Av Ruhsat No
               </label>
-              <div className="mt-1">
+              <div className="relative">
                 <input
                   type="text"
                   name="hunting_license"
@@ -202,37 +231,47 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
                   value={formData.hunting_license}
                   onChange={handleChange}
                   placeholder="Av ruhsat numaranızı giriniz"
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-lg"
                 />
+                <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                </div>
               </div>
             </div>
 
+            {/* Error Message */}
             {error && (
-              <div className="rounded-xl bg-red-50 p-4">
+              <div className="rounded-2xl bg-red-50 border border-red-200 p-6 animate-pulse">
                 <div className="flex">
                   <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-6 w-6 text-red-400" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800 select-none">{error}</h3>
+                    <h3 className="text-lg font-semibold text-red-800 select-none">{error}</h3>
                   </div>
                 </div>
               </div>
             )}
 
-            <div>
+            {/* Submit Button */}
+            <div className="pt-4">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-5 px-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg"
               >
                 {loading ? (
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin h-6 w-6 text-white mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span className="select-none">Kaydediliyor...</span>
+                  </div>
                 ) : (
                   <span className="select-none">Ankete Başla</span>
                 )}
@@ -242,27 +281,7 @@ export default function RegisterPage({ params }: { params: { surveyId: string } 
         </div>
 
         {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-gray-200">
-          <div className="text-center">
-            <div className="flex justify-center space-x-6 mb-4">
-              <a href="https://www.facebook.com/kktcavcilik" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
-                <span className="sr-only">Facebook</span>
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <a href="http://avfed.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
-                <span className="sr-only">Web Sitesi</span>
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-              </a>
-            </div>
-            <p className="text-gray-600">
-              © {new Date().getFullYear()} K.K.T.C. Avcılık Federasyonu. Tüm hakları saklıdır.
-            </p>
-          </div>
-        </div>
+        <Footer />
       </div>
     </div>
   );

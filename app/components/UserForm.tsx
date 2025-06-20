@@ -66,7 +66,7 @@ export default function UserForm() {
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
           <div className="w-48 h-16 relative mx-auto mb-8">
-            <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
+            <Image src="/logo-long.png" alt="AvGörüş Logo" fill style={{objectFit: "contain"}} priority />
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Kayıt Formu</h2>
           <p className="mt-2 text-sm text-gray-600">

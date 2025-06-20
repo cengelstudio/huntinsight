@@ -19,7 +19,7 @@ export default function ErrorPage({ message, showRetry = true }: ErrorPageProps)
           <div className="w-32 h-32 relative mx-auto mb-8">
             <Image
               src="/logo-long.png"
-              alt="Hunt Insight Logo"
+              alt="AvGörüş Logo"
               fill
               style={{ objectFit: "contain" }}
               priority

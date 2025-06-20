@@ -170,7 +170,7 @@ export default function AdminPage() {
           <div className="w-32 h-32 relative mx-auto mb-8">
             <Image
               src="/logo.png"
-              alt="Hunt Insight Logo"
+              alt="AvGörüş Logo"
               fill
               style={{ objectFit: "contain" }}
               priority
@@ -240,7 +240,7 @@ export default function AdminPage() {
             <div className="w-14 h-14 relative">
               <Image
                 src="/logo.png"
-                alt="Hunt Insight Logo"
+                alt="AvGörüş Logo"
                 fill
                 style={{ objectFit: "contain" }}
                 priority

@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Hunt Insight - Avcı Anket Platformu",
+  title: "AvGörüş - Avcı Anket Platformu",
   description: "Avcıların görüşlerini toplamak ve analiz etmek için tasarlanmış anket platformu",
   manifest: "/manifest.json",
   icons: {

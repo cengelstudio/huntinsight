@@ -2,27 +2,31 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Footer from '../components/Footer';
 
 export default function ThankYouPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-indigo-600/5"></div>
+
+      <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         {/* Logo */}
-        <div className="text-center mb-12">
-          <div className="w-48 h-16 relative mx-auto mb-8 cursor-pointer" onClick={() => router.push('/')}>
-            <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
+        <div className="text-center mb-16">
+          <div className="w-56 h-20 relative mx-auto mb-8 transform hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => router.push('/')}>
+            <Image src="/logo-long.png" alt="AvGörüş Logo" fill style={{objectFit: "contain"}} priority />
           </div>
         </div>
 
         {/* Thank You Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 text-center backdrop-blur-sm border border-white/20">
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12 text-center border border-white/50">
           {/* Success Icon */}
-          <div className="mb-6">
-            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+          <div className="mb-8">
+            <div className="mx-auto w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-lg">
               <svg
-                className="w-8 h-8 text-green-600"
+                className="w-12 h-12 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -30,7 +34,7 @@ export default function ThankYouPage() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={3}
                   d="M5 13l4 4L19 7"
                 />
               </svg>
@@ -38,26 +42,59 @@ export default function ThankYouPage() {
           </div>
 
           {/* Thank You Message */}
-          <h2 className="text-3xl font-bold text-gray-900 mb-4 select-none">
-            Teşekkür Ederiz!
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 select-none">
+            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              Teşekkür Ederiz!
+            </span>
           </h2>
-          <p className="text-xl text-gray-600 mb-3 select-none">
-            Anketi tamamladığınız için teşekkür ederiz.
-          </p>
-          <p className="text-lg text-gray-500 mb-3 select-none">
-            Cevaplarınız başarıyla kaydedildi.
-          </p>
-          <p className="text-lg text-gray-500 mb-8 select-none">
-            Katkılarınız bizim için çok değerli.
-          </p>
+
+          <div className="space-y-4 mb-10">
+            <p className="text-xl md:text-2xl text-gray-700 font-semibold select-none">
+              Anketi tamamladığınız için teşekkür ederiz.
+            </p>
+            <p className="text-lg text-gray-600 select-none">
+              Cevaplarınız başarıyla kaydedildi.
+            </p>
+            <p className="text-lg text-gray-600 select-none">
+              Katkılarınız bizim için çok değerli.
+            </p>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div className="text-sm text-blue-700 font-medium select-none">Tamamlandı</div>
+            </div>
+            <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+              </div>
+              <div className="text-sm text-green-700 font-medium select-none">Kaydedildi</div>
+            </div>
+            <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div className="text-sm text-purple-700 font-medium select-none">Analiz Edilecek</div>
+            </div>
+          </div>
 
           {/* Action Button */}
           <button
             onClick={() => router.push('/')}
-            className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+            className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-lg"
           >
             <svg
-              className="w-5 h-5 mr-2"
+              className="w-6 h-6 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -73,28 +110,20 @@ export default function ThankYouPage() {
           </button>
         </div>
 
-        {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-gray-200">
-          <div className="text-center">
-            <div className="flex justify-center space-x-6 mb-4">
-              <a href="https://www.facebook.com/kktcavcilik" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
-                <span className="sr-only">Facebook</span>
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <a href="http://avfed.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
-                <span className="sr-only">Web Sitesi</span>
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-              </a>
-            </div>
-            <p className="text-gray-600">
-              © {new Date().getFullYear()} K.K.T.C. Avcılık Federasyonu. Tüm hakları saklıdır.
+        {/* Additional Info */}
+        <div className="mt-12 text-center">
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-white/50">
+            <h3 className="text-lg font-semibold text-gray-800 mb-3 select-none">
+              Sonuçlar Hakkında
+            </h3>
+            <p className="text-gray-600 leading-relaxed select-none">
+              Anket sonuçları K.K.T.C. Avcılık Federasyonu tarafından analiz edilecek ve
+              avcılık politikalarının geliştirilmesinde kullanılacaktır.
             </p>
           </div>
         </div>
+
+        <Footer />
       </div>
     </div>
   );

@@ -18,6 +18,14 @@ export async function POST(request: Request) {
       );
     }
 
+    // Validate trnc_id: must be 10-11 digits and numeric only
+    if (!/^\d{10,11}$/.test(trnc_id)) {
+      return NextResponse.json(
+        { error: "Kimlik numarası en az 10, en fazla 11 haneli ve sadece rakamlardan oluşmalıdır." },
+        { status: 400 }
+      );
+    }
+
     // Read existing users
     const usersPath = path.join(process.cwd(), "data", "users.json");
     const usersData = await fs.readFile(usersPath, "utf-8");
@@ -32,20 +40,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create new user
-    const newUser: User = {
-      id: Date.now().toString(),
-      name,
-      surname,
-      trnc_id,
-      hunting_license,
-      createdAt: new Date().toISOString(),
-    };
-
-    // Save user
-    users.push(newUser);
-    await fs.writeFile(usersPath, JSON.stringify(users, null, 2));
-
     // Get available survey
     const surveysPath = path.join(process.cwd(), "data", "surveys.json");
     const surveysData = await fs.readFile(surveysPath, "utf-8");
@@ -55,10 +49,25 @@ export async function POST(request: Request) {
     const survey = surveys[0];
     if (!survey) {
       return NextResponse.json(
-        { error: "Aktif anket bulunmamaktadır." },
+        { error: "Aktif anket bulunmaktadır." },
         { status: 404 }
       );
     }
+
+    // Create new user
+    const newUser: User = {
+      id: Date.now().toString(),
+      name,
+      surname,
+      trnc_id,
+      hunting_license,
+      surveyId: survey.id,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Save user
+    users.push(newUser);
+    await fs.writeFile(usersPath, JSON.stringify(users, null, 2));
 
     return NextResponse.json({
       userId: newUser.id,

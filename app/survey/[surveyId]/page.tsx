@@ -6,6 +6,7 @@ import { Survey, Question, Answer, Option } from "../../types";
 import Image from "next/image";
 import ErrorPage from '@/app/components/ErrorPage';
 import LoadingScreen from '../../components/LoadingScreen';
+import Footer from '../../components/Footer';
 
 export default function SurveyPage() {
   const params = useParams();
@@ -295,88 +296,122 @@ export default function SurveyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-indigo-600/5"></div>
+
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-48 h-16 relative mx-auto cursor-pointer" onClick={() => router.push('/')}>
-            <Image src="/logo-long.png" alt="Hunt Insight Logo" fill style={{objectFit: "contain"}} priority />
+          <div className="w-56 h-20 relative mx-auto transform hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => router.push('/')}>
+            <Image src="/logo-long.png" alt="AvGörüş Logo" fill style={{objectFit: "contain"}} priority />
           </div>
         </div>
 
         {/* Survey Info and Progress */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 backdrop-blur-sm border border-white/20">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-3 select-none">{survey?.title}</h1>
-            <div className="flex items-center justify-center space-x-2 text-gray-600 select-none">
-              <span className="text-lg">Soru {currentQuestionIndex + 1} / {totalExpectedQuestions}</span>
-              <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-              <span className="text-lg">{Math.round(calculateProgress())}% Tamamlandı</span>
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-8 border border-white/50">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 select-none">
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                {survey?.title}
+              </span>
+            </h1>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 text-gray-600 select-none">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <span className="text-lg font-semibold">Soru {currentQuestionIndex + 1} / {totalExpectedQuestions}</span>
+              </div>
+              <div className="hidden sm:block w-2 h-2 rounded-full bg-gray-300"></div>
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <span className="text-lg font-semibold">{Math.round(calculateProgress())}% Tamamlandı</span>
+              </div>
             </div>
           </div>
 
           {/* Progress Bar */}
-          <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+          <div className="relative h-4 bg-gray-100 rounded-full overflow-hidden shadow-inner">
             <div
-              className="h-full bg-blue-600 transition-all duration-500 ease-in-out rounded-full"
+              className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-700 ease-out rounded-full relative"
               style={{
                 width: `${calculateProgress()}%`,
               }}
-            />
+            >
+              <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
+            </div>
           </div>
         </div>
 
         {/* Question Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 backdrop-blur-sm border border-white/20">
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-10 mb-8 border border-white/50">
           {/* Question */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4 select-none">{currentQuestion.text}</h2>
+          <div className="mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-relaxed select-none">{currentQuestion.text}</h2>
           </div>
 
           {/* Options */}
           <div className="space-y-4">
-            {currentQuestion.options.map((option) => (
+            {currentQuestion.options.map((option, index) => (
               <button
                 key={option.id}
                 onClick={() => handleOptionSelect(option)}
-                className="w-full group relative"
+                className="w-full group relative transform transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="absolute inset-0 bg-blue-50 rounded-xl transition-all duration-200
-                              transform scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100" />
-                <div className={`relative flex items-center w-full px-6 py-4 rounded-xl border-2
-                              ${selectedOption?.id === option.id
-                                ? 'border-blue-500 bg-blue-50'
-                                : 'border-gray-200 group-hover:border-blue-500'}
-                              transition-all duration-200`}>
-                  <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2
-                                ${selectedOption?.id === option.id
-                                  ? 'border-blue-500'
-                                  : 'border-gray-300 group-hover:border-blue-500'}
-                                flex items-center justify-center mr-4`}>
-                    <div className={`w-3 h-3 rounded-full transition-all duration-200
-                                  ${selectedOption?.id === option.id
-                                    ? 'bg-blue-500'
-                                    : 'bg-transparent group-hover:bg-blue-500'}`} />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl transition-all duration-300 transform scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100" />
+                <div className={`relative flex items-center w-full px-6 py-6 rounded-2xl border-2 transition-all duration-300 ${
+                  selectedOption?.id === option.id
+                    ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50 shadow-lg'
+                    : 'border-gray-200 group-hover:border-blue-400 bg-white/50 group-hover:bg-white/80'
+                }`}>
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center mr-4 transition-all duration-300 ${
+                    selectedOption?.id === option.id
+                      ? 'border-blue-500 bg-blue-500'
+                      : 'border-gray-300 group-hover:border-blue-400'
+                  }`}>
+                    {selectedOption?.id === option.id ? (
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <div className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                        selectedOption?.id === option.id ? 'bg-blue-500' : 'bg-transparent group-hover:bg-blue-100'
+                      }`} />
+                    )}
                   </div>
-                  <span className="text-lg text-gray-700 group-hover:text-gray-900 font-medium select-none">
-                    {option.text}
-                  </span>
+
+                  <div className="flex-1 flex items-center justify-between">
+                    <span className="text-lg md:text-xl text-gray-800 group-hover:text-gray-900 font-medium leading-relaxed select-none">
+                      {option.text}
+                    </span>
+                    <div className="flex items-center space-x-2 text-gray-400">
+                      <span className="text-sm font-medium select-none">{String.fromCharCode(65 + index)}</span>
+                    </div>
+                  </div>
                 </div>
               </button>
             ))}
           </div>
 
           {/* Navigation Buttons */}
-          <div className="mt-8 flex justify-between items-center space-x-4">
+          <div className="mt-12 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-6">
             <button
               onClick={handlePreviousQuestion}
               disabled={currentQuestionIndex === 0}
-              className={`flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-200 min-w-[160px]
-                        ${currentQuestionIndex === 0
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          : 'bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 border-2 border-blue-200 hover:border-blue-300'}`}
+              className={`w-full sm:w-auto flex items-center justify-center px-8 py-4 rounded-2xl font-semibold transition-all duration-300 min-w-[180px] ${
+                currentQuestionIndex === 0
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-white text-blue-600 hover:bg-blue-50 border-2 border-blue-200 hover:border-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'
+              }`}
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               <span className="select-none">Önceki Soru</span>
@@ -386,12 +421,13 @@ export default function SurveyPage() {
               <button
                 onClick={handleCompleteQuestion}
                 disabled={!selectedOption}
-                className={`flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 min-w-[160px]
-                          ${!selectedOption
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'}`}
+                className={`w-full sm:w-auto flex items-center justify-center px-8 py-4 rounded-2xl font-semibold transition-all duration-300 min-w-[180px] ${
+                  !selectedOption
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1'
+                }`}
               >
-                <span className="mr-2 select-none">Anketi Tamamla</span>
+                <span className="mr-3 select-none">Anketi Tamamla</span>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -400,12 +436,13 @@ export default function SurveyPage() {
               <button
                 onClick={handleNextQuestion}
                 disabled={!selectedOption}
-                className={`flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 min-w-[160px]
-                          ${!selectedOption
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'}`}
+                className={`w-full sm:w-auto flex items-center justify-center px-8 py-4 rounded-2xl font-semibold transition-all duration-300 min-w-[180px] ${
+                  !selectedOption
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1'
+                }`}
               >
-                <span className="mr-2 select-none">Sıradaki Soru</span>
+                <span className="mr-3 select-none">Sıradaki Soru</span>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -415,27 +452,7 @@ export default function SurveyPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-gray-200">
-          <div className="text-center">
-            <div className="flex justify-center space-x-6 mb-4">
-              <a href="https://www.facebook.com/kktcavcilik" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
-                <span className="sr-only">Facebook</span>
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <a href="http://avfed.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors duration-200">
-                <span className="sr-only">Web Sitesi</span>
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-              </a>
-            </div>
-            <p className="text-gray-600">
-              © {new Date().getFullYear()} K.K.T.C. Avcılık Federasyonu. Tüm hakları saklıdır.
-            </p>
-          </div>
-        </div>
+        <Footer />
       </div>
     </div>
   );

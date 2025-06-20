@@ -15,10 +15,10 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    // Validate trnc_id: must be exactly 10 digits and numeric only
-    if (!/^\d{10}$/.test(userData.trnc_id)) {
+    // Validate trnc_id: must be 10-11 digits and numeric only
+    if (!/^\d{10,11}$/.test(userData.trnc_id)) {
       return NextResponse.json(
-        { message: 'Kimlik numarası 10 haneli ve sadece rakamlardan oluşmalıdır.' },
+        { message: 'Kimlik numarası en az 10, en fazla 11 haneli ve sadece rakamlardan oluşmalıdır.' },
         { status: 400 }
       );
     }
